@@ -8,12 +8,15 @@
 					{{ movie.original_title }} ({{ movie.release_date }})
 					<span class="movie__overview">{{ movie.overview }}</span>
 				</div>
-				<div class="movie__buttons">
-					<button class="btn movie__buttons-watched">
+				<div class="movie__buttons" v-if="!isSearch">
+					<button class="btn movie__buttons-watched" @click="movieStore.toggleWatched(movie.id)">
 						<span v-if="!movie.isWatched">Watched</span>
 						<span v-else>Unwatched</span>
 					</button>
-					<button class="btn movie__buttons-delete">Delete</button>
+					<button class="btn movie__buttons-delete" @click="movieStore.deleteMovies(movie.id)">Delete</button>
+				</div>
+				<div class="movie__buttons" v-else>
+					<button class="btn btn__green" @click="searchStore.addToUseMovies(movie)">Add</button>
 				</div>
 			</div>
 		</div>
@@ -21,11 +24,21 @@
 </template>
 
 <script setup>
+import { useMovieStore } from '../stores/MovieStore';
+import { useSearchStore } from '../stores/SearchStore';
+
+const movieStore = useMovieStore();
+const searchStore = useSearchStore();
 const props = defineProps({
 	movie: {
 		type: Object,
 		required: true,
 		default: () => { },
+	},
+	isSearch: {
+		type: Boolean,
+		required: false,
+		default: false,
 	}
 });
 
@@ -99,15 +112,6 @@ const props = defineProps({
 .movie-accept {
 	margin-right: 10px;
 }
-
-
-
-
-
-
-
-
-
 
 
 .movie-buttons-watched__icon {

@@ -7,8 +7,8 @@
       <h2 class="header__title">My Favorite Movies</h2>
     </header>
     <div class="tabs">
-      <button class="btn">Favorite</button>
-      <button class="btn">Search</button>
+      <button :class="['btn', {btn_green: movieStore.activeTab === 1}]" @click="movieStore.setActiveTab(1)" >Favorite</button>
+      <button :class="['btn', {btn_green: movieStore.activeTab === 2}]" @click="movieStore.setActiveTab(2)" >Search</button>
     </div>
     <main>
       <div v-if="movieStore.activeTab === 1" class="movies">
@@ -28,7 +28,7 @@
         />
     </div>
     <div v-if="movieStore.activeTab === 2" class="search">
-      Search
+      <Search/>
     </div>
     </main>
   </div>
@@ -36,6 +36,7 @@
 
 <script setup>
 import { useMovieStore } from './stores/MovieStore.js';
+import Search from './components/Search.vue';
 import Movie from './components/Movie.vue';
 const movieStore = useMovieStore();
 
